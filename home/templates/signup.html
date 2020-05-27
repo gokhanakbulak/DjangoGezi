@@ -1,0 +1,218 @@
+{% extends "homebase.html" %}
+    {% block title %} Kayıt Ol {% endblock %}
+    {% block keywords %}{% endblock %}
+    {% block description %} {% endblock %}
+    {% block head %}
+        <link rel='shortcust icon' type='image/x-icon' href=''/>
+    {% endblock %}
+{% block navbar %}
+{% load static %}
+
+  {% include 'navbar.html' %}
+
+
+{% endblock %}
+
+
+{% block content %}
+<section class="ftco-section ftco-degree-bg">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-8 ftco-animate" style="overflow: hidden;">
+
+
+
+            <h2 class="mb-3">Üye Kayıt Formu</h2>
+<hr style="border:1px solid  red">
+                            <h7 class="mb-5"></h7>
+<h5 class="mb-5"></h5>
+
+                <p class="img-fluid">
+
+
+<div class="col-md-10">
+
+						<div  id="product-main-view">
+                        	<div class="product-view" >
+
+
+							</div>
+                               {% for img in images %}
+							<div class="product-view">
+
+
+
+							</div>
+                             {% endfor %}
+
+						</div>
+						<div id="product-view">
+							<div class="product-view">
+
+							</div>
+
+							<div class="product-view">
+
+
+
+							</div>
+
+
+						</div>
+					</div>
+
+
+{% if messages %}
+                    {% for message in messages %}
+                         <div class="alert alert-{{ message.tags }}" role="alert">
+                         {{ message }}
+
+                    </div>
+                    {% endfor %}
+{% endif %}
+            <form method="post">
+             {% csrf_token %}
+                {% for field in form %}
+                    <p>
+
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small style ="color:grey;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red;">
+                        <br>{{ error }}
+
+                    </p>
+                        {% endfor %}
+<br>
+                {% endfor %}
+<br>
+
+                <input type="submit" value="Kayıt Ol" class="btn btn-primary py-3 px-5">
+
+            </form>
+                </p>
+
+
+
+
+            <div class="pt-5 mt-5">
+
+              <h3 class="mb-5"></h3>
+              <ul class="comment-list" >
+
+                <li class="comment" style="background: #fbfbfb;">
+                  <div class="vcard bio">
+
+                  </div>
+
+                  <div class="comment-body">
+
+
+
+
+                  </div>
+
+                </li>
+
+
+
+                  </ul>
+
+
+
+              <!-- END comment-list -->
+
+              <div class="comment-form-wrap pt-5">
+                <h3 class="mb-5"></h3>
+
+
+                  <div class="form-group">
+                    <label for="subject"></label>
+
+                  </div>
+
+                  <div class="form-group">
+
+                  </div>
+                  <div class="form-group">
+
+                  </div>
+
+                  <div class="form-group">
+
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+          </div> <!-- .col-md-8 -->
+          <div class="col-md-4 sidebar ftco-animate">
+            <div class="sidebar-box">
+              <form action="#" class="search-form">
+                <div class="form-group">
+                  <span class="icon fa fa-search"></span>
+                  <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                </div>
+              </form>
+            </div>
+            <div class="sidebar-box ftco-animate">
+              <div class="categories">
+                <h3>Kategoriler</h3>
+                 {% for cs in obj %}
+                <li><a href="#">{{ cs.title }} <span></span></a></li>
+                  {% endfor %}
+
+              </div>
+            </div>
+
+            <div class="sidebar-box ftco-animate">
+
+              <h3>Son Gezi Rehberleri</h3>
+                {% for rs in songezi %}
+              <div class="block-21 mb-4 d-flex">
+
+                <a class="blog-img mr-4" style="background-image: url({{ rs.image.url }});"></a>
+                <div class="text">
+                  <h3 class="heading"><a href="#">{{ rs.description }}</a></h3>
+                  <div class="meta">
+                    <div><a href="#"><span class="icon-calendar"></span> {{ rs.create_at }}</a></div>
+                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                  </div>
+                </div>
+              </div>
+                {% endfor %}
+
+
+
+            </div>
+
+            <div class="sidebar-box ftco-animate">
+              <h3>Tag Cloud</h3>
+              <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">dish</a>
+                <a href="#" class="tag-cloud-link">menu</a>
+                <a href="#" class="tag-cloud-link">food</a>
+                <a href="#" class="tag-cloud-link">sweet</a>
+                <a href="#" class="tag-cloud-link">tasty</a>
+                <a href="#" class="tag-cloud-link">delicious</a>
+                <a href="#" class="tag-cloud-link">desserts</a>
+                <a href="#" class="tag-cloud-link">drinks</a>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </section> <!-- .section -->
+
+
+{% endblock %}

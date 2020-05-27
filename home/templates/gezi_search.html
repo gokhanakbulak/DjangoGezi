@@ -1,0 +1,64 @@
+{% extends "homebase.html" %}
+    {% block title %} Geziler  - {% endblock %}
+    {% block keywords %}{% endblock %}
+    {% block description %}{% endblock %}
+    {% block head %}
+        <link rel='shortcust icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+    {% endblock %}
+{% block navbar %}
+{% load static %}
+
+  {% include 'navbar.html' %}
+
+
+{% endblock %}
+
+
+{% block content %}
+<section class="ftco-section ftco-destination">
+    	<div class="container">
+    		<div class="row justify-content-start mb-5 pb-3">
+          <div class="col-md-7 heading-section ftco-animate">
+
+            <h2 class="mb-4"><strong>Arama Sonuçları</strong> </h2>
+
+          </div>
+        </div>
+    		<div class="row">
+
+    			<div class="col-md-12">
+{% for rs in gezi %}
+    				<div class="item col-md-3" style="float:left;">
+		    				<div class="destination">
+
+		    					<a href="/gezi/{{ rs.id }}/{{ rs.slug }}" class="img d-flex justify-content-center align-items-center" style="background-image: url({{ rs.image.url }});">
+		    						<div class="icon d-flex justify-content-center align-items-center">
+		    							<span class="icon-search2"></span>
+		    						</div>
+		    					</a>
+		    					<div class="text p-3">
+		    						<h3><a href="#">{{ rs.title }}</a></h3>
+		    						<span class="listing">{{ rs.description }}</span>
+                                    <a href="/gezi/{{ node.id }}/{{ node.slug }}" style="float:right;font-size: 12px;color:black;">Devamını Oku</a>
+		    					</div>
+		    				</div>
+	    				</div>
+
+	    			          {% endfor %}
+
+
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+
+
+
+</div>
+</div>
+
+
+
+{% endblock %}
+

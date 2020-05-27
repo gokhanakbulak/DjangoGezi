@@ -1,51 +1,463 @@
- <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Gezi & Aktivite</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="oi oi-menu"></span> Menu
-      </button>
-{% load static %}
-      <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="tour.html" class="nav-link">Tour</a></li>
-          <li class="nav-item"><a href="hotel.html" class="nav-link">Hotels</a></li>
-          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-          <li class="nav-item cta"><a href="contact.html" class="nav-link"><span>Add listing</span></a></li>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-hover"
+     style="position: fixed;z-index: 3;width: 100%;top: 0;">
+    <a class="navbar-brand" href="#">Gezi ve Aktivite</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHover"
+            aria-controls="navbarDD" aria-expanded="false" aria-label="Navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarHover">
+        <ul class="navbar-nav">
+            <li class="nav-item active" style="padding-left: 50px;">
+                <a class="nav-link" href="/home">Anasayfa <span class="sr-only">(current)</span></a>
+
+            <li class="nav-item dropdown" style="padding-left: 50px;">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    Seyahat Durakları
+                </a>
+
+                {% load mptt_tags %}
+                <ul class="dropdown-menu" style="padding-left: 50px;">
+                    {% recursetree category %}
+
+                        <li>
+
+                            <a href="/category/{{ node.id }}/{{ node.slug }}" style="color:black;"> {{ node.title }}</a>
+                            {% if not node.is_leaf_node %}
+                                <ul class="children dropdown-item " style="color:black;">
+                                    <li><a href="/category/{{ node.id }}/{{ node.slug }}"
+                                           style="color:black;"> {{ children }}</a></li>
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endrecursetree %}
+                </ul>
+            </li>
+            <li class="nav-item" style="padding-left: 50px;">
+                <a class="nav-link" href="/aboutus">Hakkımızda</a>
+            </li>
+            <li class="nav-item" style="padding-left: 50px;">
+                <a class="nav-link" href="/contact">İletişim</a>
+            </li>
+
+
+            {% load static %}
+            {% if user.id is not  None %}
+
+                <li class="nav-item dropdown" style="padding-left: 50px;">
+                    <img src="{{ profile.image.url }}" width="25px" height="25px"
+                         style="float:left;margin-top: 10px;border-radius: 50%;"/>
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: left;margin-left: 10px;">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </a>
+
+                    <ul class="dropdown-menu" style="padding-left: 50px;background: whitesmoke;">
+
+
+                        <li>
+
+                            <a href="/profile/" style="color:black;" class="dropdown-item"> <strong>Profilim</strong></a>
+                            <a href="/comments/" style="color:black;" class="dropdown-item"><strong>Yorumlarım</strong> </a>
+                            <a href="/logout/" style="color:black;" class="dropdown-item"> <strong>Çıkış</strong></a>
+
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+
+
+
+
+
+
+
+            {% else %}
+
+
+
+                <li class="nav navbar-nav navbar-right ml-auto" style="padding-left: 150px;float:right;">
+                <li class="nav-item" style="margin-left:20px;">
+                    <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Giriş</a>
+
+                    <ul class="dropdown-menu form-wrapper">
+                        <li>
+                            <h3 style=" text-align: center;">Giriş Alanı</h3>
+
+                            <hr>
+                            <div class="form-group">
+                                <form action="/login/" method="post">
+                                    {% csrf_token %}
+                                    <input type="text" class="form-control" placeholder="Username" required="required"
+                                           name="username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" required="required"
+                                       name="password">
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block" value="Login">
+                            <div class="form-footer">
+                                <a href="#">Şifrenizi mi unuttunuz?</a>
+                            </div>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" style="padding-left: 50px;">
+                    <a class="nav-link" href="/signup/">Kayıt Ol</a>
+                </li>
+            {% endif %}
+
+
         </ul>
-      </div>
     </div>
-  </nav>
-    <!-- END nav -->
+</nav>
 
-    <div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1.jpg'%});">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-start" data-scrollax-parent="true">
-          <div class="col-md-9 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-            <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><strong>Explore <br></strong> your amazing city</h1>
-            <p data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Find great places to stay, eat, shop, or visit from local experts</p>
-            <div class="block-17 my-4">
-              <form action="" method="post" class="d-block d-flex">
-                <div class="fields d-block d-flex">
-                  <div class="textfield-search one-third">
-                  	<input type="text" class="form-control" placeholder="Ex: food, service, hotel">
-                  </div>
+<style>
 
-                </div>
-                <input type="submit" class="search-submit btn btn-primary" value="Search">
-              </form>
-            </div>
-            <p>Or browse the highlights</p>
-            <p class="browse d-md-flex">
-            	<span class="d-flex justify-content-md-center align-items-md-center"><a href="#"><i class="flaticon-fork"></i>Restaurant</a></span>
-            	<span class="d-flex justify-content-md-center align-items-md-center"><a href="#"><i class="flaticon-hotel"></i>Hotel</a></span>
-            	<span class="d-flex justify-content-md-center align-items-md-center"><a href="#"><i class="flaticon-meeting-point"></i>Places</a></span>
-            	<span class="d-flex justify-content-md-center align-items-md-	center"><a href="#"><i class="flaticon-shopping-bag"></i>Shopping</a></span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    /* hover dropdown menus */
+    @media only screen and (max-width: 991px) {
+        .navbar-hover .show > .dropdown-toggle::after {
+            transform: rotate(-90deg);
+        }
+    }
+
+    @media only screen and (min-width: 992px) {
+        .navbar-hover .collapse ul li {
+            position: relative;
+            list-style-type: none;
+            text-decoration: none;
+            font-family: "Times New Roman";
+            font-size: 14px;
+            color: black;
+        }
+
+        .navbar-hover .collapse ul li:hover > ul {
+            display: block;
+            color: black;
+        }
+
+        .navbar-hover .collapse ul ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 250px;
+            display: none;
+            background: white;
+            padding: 10px;
+            color: black;
+        }
+
+        .navbar-hover .collapse ul ul ul {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 250px;
+            display: none;
+            background: white;
+            color: black;
+        }
+
+        /*.navbar-hover .collapse ul ul ul ul{position:absolute;top:0;left:-100%;min-width:250px;display:none;z-index:1}*/
+    }
+
+    @media (max-width: 768px) {
+        #login-dp {
+            background-color: inherit;
+            color: #fff;
+        }
+
+    }
+</style>
+
+<style type="text/css">
+    body {
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .form-control {
+        box-shadow: none;
+        font-weight: normal;
+        font-size: 13px;
+    }
+
+    .form-control:focus {
+        border-color: #33cabb;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-header.col {
+        padding: 0 !important;
+    }
+
+    .navbar {
+        background: #fff;
+        padding-left: 16px;
+        padding-right: 16px;
+        border-bottom: 1px solid #dfe3e8;
+        border-radius: 0;
+    }
+
+    .nav-link img {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        margin: -8px 0;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+        padding-left: 0;
+        font-size: 20px;
+        padding-right: 50px;
+    }
+
+    .navbar .navbar-brand b {
+        font-weight: bold;
+        color: #33cabb;
+    }
+
+    .navbar .form-inline {
+        display: inline-block;
+    }
+
+    .navbar .nav li {
+        position: relative;
+    }
+
+    .navbar .nav li a {
+        color: #888;
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-box input {
+        padding-right: 35px;
+        border-color: #dfe3e8;
+        border-radius: 4px !important;
+        box-shadow: none
+    }
+
+    .search-box .input-group-addon {
+        min-width: 35px;
+        border: none;
+        background: transparent;
+        position: absolute;
+        right: 0;
+        z-index: 9;
+        padding: 7px;
+        height: 100%;
+    }
+
+    .search-box i {
+        color: #a0a5b1;
+        font-size: 19px;
+    }
+
+    .navbar .nav .btn-primary, .navbar .nav .btn-primary:active {
+        color: #fff;
+        background: #33cabb;
+        padding-top: 8px;
+        padding-bottom: 6px;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .navbar .nav .btn-primary:hover, .navbar .nav .btn-primary:focus {
+        color: #fff;
+        outline: none;
+        background: #31bfb1;
+    }
+
+    .navbar .navbar-right li:first-child a {
+        padding-right: 30px;
+    }
+
+    .navbar .nav-item i {
+        font-size: 18px;
+    }
+
+    .navbar .dropdown-item i {
+        font-size: 16px;
+        min-width: 22px;
+    }
+
+    .navbar ul.nav li.active a, .navbar ul.nav li.open > a {
+        background: transparent !important;
+    }
+
+    .navbar .nav .get-started-btn {
+        min-width: 120px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .navbar ul.nav li.open > a.get-started-btn {
+        color: #fff;
+        background: #31bfb1 !important;
+    }
+
+    .navbar .dropdown-menu {
+        border-radius: 1px;
+        border-color: #e5e5e5;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+    }
+
+    .navbar .nav .dropdown-menu li {
+        color: #999;
+        font-weight: normal;
+    }
+
+    .navbar .nav .dropdown-menu li a, .navbar .nav .dropdown-menu li a:hover, .navbar .nav .dropdown-menu li a:focus {
+        padding: 8px 20px;
+        line-height: normal;
+    }
+
+    .navbar .navbar-form {
+        border: none;
+    }
+
+    .navbar .dropdown-menu.form-wrapper {
+        width: 280px;
+        padding: 20px;
+        left: auto;
+        right: 0;
+        font-size: 14px;
+    }
+
+    .navbar .dropdown-menu.form-wrapper a {
+        color: #33cabb;
+        padding: 0 !important;
+    }
+
+    .navbar .dropdown-menu.form-wrapper a:hover {
+        text-decoration: none;
+    }
+
+    .navbar .form-wrapper .hint-text {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+
+    .navbar .form-wrapper .social-btn .btn, .navbar .form-wrapper .social-btn .btn:hover {
+        color: #fff;
+        margin: 0;
+        padding: 0 !important;
+        font-size: 13px;
+        border: none;
+        transition: all 0.4s;
+        text-align: center;
+        line-height: 34px;
+        width: 47%;
+        text-decoration: none;
+    }
+
+    .navbar .social-btn .btn-primary {
+        background: #507cc0;
+    }
+
+    .navbar .social-btn .btn-primary:hover {
+        background: #4676bd;
+    }
+
+    .navbar .social-btn .btn-info {
+        background: #64ccf1;
+    }
+
+    .navbar .social-btn .btn-info:hover {
+        background: #4ec7ef;
+    }
+
+    .navbar .social-btn .btn i {
+        margin-right: 5px;
+        font-size: 16px;
+        position: relative;
+        top: 2px;
+    }
+
+    .navbar .form-wrapper .form-footer {
+        text-align: center;
+        padding-top: 10px;
+        font-size: 13px;
+    }
+
+    .navbar .form-wrapper .form-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .navbar .form-wrapper .checkbox-inline input {
+        margin-top: 3px;
+    }
+
+    .or-seperator {
+        margin-top: 32px;
+        text-align: center;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .or-seperator b {
+        color: #666;
+        padding: 0 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+        text-align: center;
+        line-height: 26px;
+        background: #fff;
+        display: inline-block;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        position: relative;
+        top: -15px;
+        z-index: 1;
+    }
+
+    .navbar .checkbox-inline {
+        font-size: 13px;
+    }
+
+    .navbar .navbar-right .dropdown-toggle::after {
+        display: none;
+    }
+
+    @media (min-width: 1200px) {
+        .form-inline .input-group {
+            width: 300px;
+            margin-left: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar .dropdown-menu.form-wrapper {
+            width: 100%;
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+        }
+
+        .navbar .form-inline {
+            display: block;
+        }
+
+        .navbar .input-group {
+            width: 100%;
+        }
+
+        .navbar .nav .btn-primary, .navbar .nav .btn-primary:active {
+            display: block;
+        }
+    }
+</style>
+<script type="text/javascript">
+    // Prevent dropdown menu from closing when click inside the form
+    $(document).on("click", ".navbar-right .dropdown-menu", function (e) {
+        e.stopPropagation();
+    });
+</script>

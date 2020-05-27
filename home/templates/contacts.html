@@ -1,0 +1,67 @@
+{% extends "homebase.html" %}
+    {% block title %} İletişim  -  {{ setting.company }}{% endblock %}
+    {% block keywords %}{{ setting.keywords }} {% endblock %}
+    {% block description %}{{ setting.description }} {% endblock %}
+    {% block head %}
+        <link rel='shortcust icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
+    {% endblock %}
+{% block navbar %}
+
+
+  {% include 'navbar.html' %}
+
+
+{% endblock %}
+
+{% block content %}
+<div class="section">
+
+<div class="container">
+
+ <section class="ftco-section contact-section ftco-degree-bg">
+      <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+          <div class="col-md-12 mb-4">
+            <h2 class="h4">İletişim</h2>
+          </div>
+          <div class="w-100"></div>
+          <div class="col-md-5">
+            <p> {{ setting.contact | safe }}</p>
+          </div>
+
+        </div>
+        <div class="row block-9">
+          <div class="col-md-6 pr-md-5">
+              {% if messages %}
+                    {% for message in messages %}
+                         <div class="alert alert-{{ message.tags }}" role="alert">
+                         {{ message }}
+
+                    </div>
+                    {% endfor %}
+             {% endif %}
+            <form action="" method="post">
+             {% csrf_token %}
+                {{ form.as_p }}
+
+                <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+
+            </form>
+
+          </div>
+
+          <div class="col-md-6" id="map"></div>
+        </div>
+      </div>
+
+    </section>
+
+
+
+</div>
+</div>
+
+
+
+{% endblock %}
+

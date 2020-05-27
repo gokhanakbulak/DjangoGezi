@@ -18,11 +18,26 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from home import views
+
 urlpatterns = [
-    path('',include('home.urls')),
+    path('', include('home.urls')),
+    path('user/',include('user.urls')),
+    path('aboutus', views.aboutus, name='aboutus'),
+    path('reference', views.reference, name='reference'),
+    path('contact', views.contact, name='contact'),
     path('home/', include('home.urls')),
     path('gezi/',include('gezi.urls')),
     path('admin/', admin.site.urls),
+    path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    path('category/<int:id>/<slug:slug>/', views.category_gezi, name='category_gezi'),
+    path('gezi/<int:id>/<slug:slug>/', views.gezi_detay, name='gezi_detay'),
+    path('search/', views.gezi_search, name='gezi_search'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('login/', views.login_view, name='login_view'),
+    path('signup/', views.signup_view, name='signup_view'),
+
+
 ]
 if settings.DEBUG: # new
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

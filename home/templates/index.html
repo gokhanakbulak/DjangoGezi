@@ -2,7 +2,7 @@
     {% block title %} {{ setting.title }}{% endblock %}
     {% block keywords %}{{ setting.keywords }} {% endblock %}
     {% block description %}{{ setting.description }} {% endblock %}
-    {% block head %}
+     {% block head %}
         <link rel='shortcust icon' type='image/x-icon' href='{{ setting.icon.url }}'/>
     {% endblock %}
 
@@ -15,3 +15,4 @@
 {% block content %}
  {% include "content.html" %}
 {% endblock %}
+{% include 'footer.html' %}
